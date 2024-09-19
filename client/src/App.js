@@ -4,7 +4,10 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute component
+import MyEvents from './components/MyEvents';
+import CreateEvent from './components/CreateEvent';
+import EditEvent from './components/EditEvent'; // Import the EditEvent component
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [user, setUser] = useState(null); // Centralized user state
@@ -37,12 +40,12 @@ function App() {
         <Header user={user} handleLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<Home />} />
-          
-          {/* Protect the login and signup routes */}
+
+          {/* Protect the login and signup routes so logged-in users cannot access them */}
           <Route
             path="/login"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={!user}>
                 <Login handleLogin={handleLogin} />
               </ProtectedRoute>
             }
@@ -50,8 +53,34 @@ function App() {
           <Route
             path="/signup"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={!user}>
                 <Signup />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protect routes to only allow logged-in users to access them */}
+          <Route
+            path="/my-events"
+            element={
+              <ProtectedRoute user={user}>
+                <MyEvents user={user} /> {/* Pass user to MyEvents */}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-event"
+            element={
+              <ProtectedRoute user={user}>
+                <CreateEvent />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/edit-event/:id"
+            element={
+              <ProtectedRoute user={user}>
+                <EditEvent />
               </ProtectedRoute>
             }
           />

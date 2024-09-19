@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static files from the 'uploads' directory
+// Make sure to adjust the path since the 'uploads' folder is now inside 'src'
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Set the port from the environment or default to 5000
@@ -26,7 +27,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRouter);
-app.use('/api/events', eventRouter);  // Corrected the route
+app.use('/api/events', eventRouter); 
 
 // Start the server and connect to the database
 app.listen(PORT, (err) => {

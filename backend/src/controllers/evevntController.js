@@ -11,7 +11,7 @@ exports.createEvent = async (req, res) => {
       date,
       location,
       maxAttendees,
-      creator: req.user._id, // Assume req.user contains authenticated user data
+      creator: req.user._id, 
       image: req.file ? `/uploads/${req.file.filename}` : '', // Save image URL
     });
 
@@ -21,6 +21,7 @@ exports.createEvent = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Get all events
 exports.getAllEvents = async (req, res) => {
@@ -44,6 +45,7 @@ exports.editEvent = async (req, res) => {
       return res.status(404).json({ message: 'Event not found' });
     }
 
+    // Ensure the user requesting the update is the event's creator
     if (event.creator.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized' });
     }
@@ -65,9 +67,9 @@ exports.editEvent = async (req, res) => {
   }
 };
 
-// Delete event
+
 exports.deleteEvent = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // Event ID from URL parameters
 
   try {
     const event = await Event.findById(id);
@@ -76,13 +78,37 @@ exports.deleteEvent = async (req, res) => {
       return res.status(404).json({ message: 'Event not found' });
     }
 
+    console.log('Logged-in user ID:', req.user._id);
+    console.log('Event creator ID:', event.creator);
+
+    // Ensure the user requesting the deletion is the event's creator
     if (event.creator.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: 'Not authorized' });
+      return res.status(403).json({ message: 'Not authorized to delete this event' });
     }
 
-    await event.remove();
-    res.status(200).json({ message: 'Event deleted' });
+    // Delete the event
+    await event.deleteOne();
+    res.status(200).json({ message: 'Event deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
+// Get events created by the logged-in user
+exports.getMyEvents = async (req, res) => {
+  try {
+    // Find events where the creator matches the logged-in user's ID
+    const myEvents = await Event.find({ creator: req.user._id });
+    
+    if (!myEvents) {
+      return res.status(404).json({ message: 'No events found' });
+    }
+
+    res.status(200).json(myEvents);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
