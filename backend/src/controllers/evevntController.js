@@ -3,7 +3,7 @@ const Event = require('../models/event');
 // Create a new event
 exports.createEvent = async (req, res) => {
   const { title, description, date, location, maxAttendees } = req.body;
-  
+
   try {
     const newEvent = new Event({
       title,
@@ -14,7 +14,7 @@ exports.createEvent = async (req, res) => {
       creator: req.user._id, // Assume req.user contains authenticated user data
       image: req.file ? `/uploads/${req.file.filename}` : '', // Save image URL
     });
-    
+
     await newEvent.save();
     res.status(201).json(newEvent);
   } catch (error) {
@@ -44,7 +44,6 @@ exports.editEvent = async (req, res) => {
       return res.status(404).json({ message: 'Event not found' });
     }
 
-    // Only allow event creator to edit the event
     if (event.creator.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized' });
     }
@@ -54,8 +53,7 @@ exports.editEvent = async (req, res) => {
     event.date = date;
     event.location = location;
     event.maxAttendees = maxAttendees;
-    
-    // Update image if a new one is uploaded
+
     if (req.file) {
       event.image = `/uploads/${req.file.filename}`;
     }
@@ -67,6 +65,7 @@ exports.editEvent = async (req, res) => {
   }
 };
 
+// Delete event
 exports.deleteEvent = async (req, res) => {
   const { id } = req.params;
 

@@ -1,20 +1,20 @@
 const express = require('express');
-const { createEvent, getAllEvents, editEvent, deleteEvent } = require('../controllers/eventController');
-const upload = require('../middleware/upload');
-const authMiddleware = require('../middleware/authMiddleware'); // Ensure user is authenticated
+const { createEvent, getAllEvents, editEvent, deleteEvent } = require('../controllers/evevntController');
+const upload = require('../middleware/upload'); // Import Multer middleware
+const authMiddleware = require('../middleware/authMiddleware'); // Import auth middleware
 
 const router = express.Router();
 
-// Create event (protected route)
+// Create an event (with image upload)
 router.post('/create', authMiddleware, upload.single('image'), createEvent);
 
 // Get all events (public route)
 router.get('/', getAllEvents);
 
-// Edit event (protected route)
+// Edit an event (with image upload)
 router.put('/:id', authMiddleware, upload.single('image'), editEvent);
 
-// Delete event (protected route)
+// Delete an event
 router.delete('/:id', authMiddleware, deleteEvent);
 
 module.exports = router;
