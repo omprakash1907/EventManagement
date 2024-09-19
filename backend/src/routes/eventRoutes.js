@@ -1,5 +1,5 @@
 const express = require('express');
-const { createEvent, getAllEvents, editEvent, deleteEvent, getMyEvents } = require('../controllers/evevntController');
+const { createEvent, getAllEvents, editEvent, deleteEvent, getMyEvents, getEventById } = require('../controllers/evevntController');
 const upload = require('../middleware/upload'); // Import Multer middleware
 const authMiddleware = require('../middleware/authMiddleware'); // Import auth middleware
 
@@ -22,5 +22,8 @@ router.put('/:id', authMiddleware, upload.single('image'), editEvent);
 
 // Delete an event
 router.delete('/:id', authMiddleware, deleteEvent);
+
+// get event by ID
+router.get('/:id', authMiddleware, getEventById);
 
 module.exports = router;

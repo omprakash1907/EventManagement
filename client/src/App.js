@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import MyEvents from './components/MyEvents';
-import CreateEvent from './components/CreateEvent';
-import EditEvent from './components/EditEvent'; // Import the EditEvent component
-import ProtectedRoute from './components/ProtectedRoute';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import MyEvents from "./components/MyEvents";
+import CreateEvent from "./components/CreateEvent";
+import EditEvent from "./components/EditEvent"; // Import the EditEvent component
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [user, setUser] = useState(null); // Centralized user state
 
   useEffect(() => {
     // Check if the user is already logged in (stored in localStorage)
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser)); // Set the user state if found in localStorage
     }
@@ -23,14 +23,14 @@ function App() {
   const handleLogin = (userData) => {
     // Set the user state and store the data in localStorage after login
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData)); // Save user info to localStorage
+    localStorage.setItem("user", JSON.stringify(userData)); // Save user info to localStorage
   };
 
   const handleLogout = () => {
     // Clear user state and remove from localStorage on logout
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   return (

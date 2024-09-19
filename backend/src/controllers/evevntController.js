@@ -112,3 +112,21 @@ exports.getMyEvents = async (req, res) => {
   }
 };
 
+// Get event by ID
+exports.getEventById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const event = await Event.findById(id).populate('creator', 'name email');
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.status(200).json(event);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+

@@ -9,9 +9,10 @@ const EventCard = ({ event, onDelete, loggedInUser }) => {
 
   // Handle edit (redirect to edit page)
   const handleEdit = () => {
-    navigate(`/edit-event/${event._id}`);
+    navigate(`/edit-event/${event._id}`); // Redirect to edit page with event ID
   };
 
+  // Handle delete
   const handleDelete = async () => {
     const confirmDelete = window.confirm('Are you sure you want to delete this event?');
     if (confirmDelete) {
@@ -20,7 +21,7 @@ const EventCard = ({ event, onDelete, loggedInUser }) => {
         if (!token) {
           throw new Error('No token found.');
         }
-  
+
         await axios.delete(`http://localhost:5000/api/events/${event._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,  // Pass token correctly
@@ -32,25 +33,37 @@ const EventCard = ({ event, onDelete, loggedInUser }) => {
       }
     }
   };
-  
 
   return (
-    <div className="border rounded shadow-lg p-4 relative">
+    <div className="border rounded shadow-lg p-4 flex flex-col justify-between relative h-full">
       <img src={`http://localhost:5000${event.image}`} alt={event.title} className="w-full h-32 object-cover mb-4" />
-      <h3 className="text-xl font-bold">{event.title}</h3>
-      <p>{event.host}</p>
-      <p>{event.date}</p>
-      <p>{event.location}</p>
-      <p>{event.attendees.length} attendees</p>
+      <div className="mb-4">
+        <h3 className="text-xl font-bold">{event.title}</h3>
+        <p>{event.host}</p>
+        <p>{event.date}</p>
+        <p>{event.location}</p>
+        <p>{event.attendees.length} attendees</p>
+      </div>
 
       {/* Show Edit and Delete buttons only if the logged-in user is the creator of the event */}
       {loggedInUser && loggedInUser._id === event.creator._id && (
-        <div className="absolute top-2 right-2 space-x-2">
-          <button onClick={handleEdit} className="text-blue-500 hover:text-blue-700">
+        <div className="mt-auto flex justify-between space-x-4">
+          {/* Update Button */}
+          <button
+            onClick={handleEdit}
+            className="bg-blue-500 text-white py-2 px-4 rounded flex items-center space-x-2 hover:bg-blue-700"
+          >
             <FontAwesomeIcon icon={faEdit} />
+            <span>Edit</span>
           </button>
-          <button onClick={handleDelete} className="text-red-500 hover:text-red-700">
+
+          {/* Delete Button */}
+          <button
+            onClick={handleDelete}
+            className="bg-red-500 text-white py-2 px-4 rounded flex items-center space-x-2 hover:bg-red-700"
+          >
             <FontAwesomeIcon icon={faTrashAlt} />
+            <span>Delete</span>
           </button>
         </div>
       )}
