@@ -24,19 +24,30 @@ exports.createEvent = async (req, res) => {
 
 
 // Get all events
+// Get all events with pagination
 exports.getAllEvents = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10 } = req.query; // Defaults: page 1, limit 10
+
   try {
     const events = await Event.find()
       .populate('attendees', 'name email')
-      .skip((page - 1) * limit)
-      .limit(parseInt(limit))
-      .lean(); // Use lean for performance
-    res.status(200).json(events);
+      .limit(limit * 1) // Limit the results
+      .skip((page - 1) * limit) // Skip previous pages' events
+      .exec(); // Execute the query
+
+    // Get the total number of documents in the events collection
+    const count = await Event.countDocuments();
+
+    res.status(200).json({
+      events,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Edit event
 exports.editEvent = async (req, res) => {
