@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EventCard from './EventCard';
 import axios from 'axios';
 
-const EventList = ({ loggedInUser }) => {
+const EventList = ({ searchTerm, location, date }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch events from the backend
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/events');
-        setEvents(response.data);  // Set the events state with the fetched data
+        setEvents(response.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -24,23 +23,27 @@ const EventList = ({ loggedInUser }) => {
     fetchEvents();
   }, []);
 
-  // Handle event deletion from the list
-  const handleDelete = (eventId) => {
-    setEvents(events.filter(event => event._id !== eventId)); // Remove deleted event from the list
-  };
-
-  // Display loading or error if applicable
   if (loading) return <p>Loading events...</p>;
   if (error) return <p>{error}</p>;
 
+  // Filter events based on searchTerm, location, and date
+  const filteredEvents = events.filter((event) => {
+    const matchesSearchTerm = event.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLocation = location ? event.location.toLowerCase() === location.toLowerCase() : true;
+    const matchesDate = date ? new Date(event.date).toLocaleDateString() === new Date(date).toLocaleDateString() : true;
+
+    return matchesSearchTerm && matchesLocation && matchesDate;
+  });
+
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Events near you</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {events.map((event, index) => (
-          <EventCard key={index} event={event} loggedInUser={loggedInUser} onDelete={handleDelete} />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      {filteredEvents.length > 0 ? (
+        filteredEvents.map((event, index) => (
+          <EventCard key={index} event={event} />
+        ))
+      ) : (
+        <p>No events found.</p>
+      )}
     </div>
   );
 };

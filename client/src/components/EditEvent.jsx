@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Import SweetAlert
 
 const EditEvent = () => {
   const { id } = useParams(); // Get the event ID from the URL
@@ -41,7 +42,7 @@ const EditEvent = () => {
       } catch (error) {
         console.error('Error fetching event data:', error);
         if (error.response && error.response.status === 401) {
-          // If the user is unauthorized, you can redirect them to the login page
+          // If the user is unauthorized, redirect to login page
           navigate('/login');
         }
       }
@@ -78,9 +79,26 @@ const EditEvent = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      navigate('/my-events'); // Redirect back to My Events after successful update
+
+      // Show SweetAlert for success
+      Swal.fire({
+        title: 'Success!',
+        text: 'Event updated successfully!',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      }).then(() => {
+        navigate('/my-events'); 
+      });
     } catch (error) {
       console.error('Error updating event:', error);
+
+      // Show SweetAlert for error
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to update the event.',
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+      });
     }
   };
 

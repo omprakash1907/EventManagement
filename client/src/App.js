@@ -6,8 +6,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyEvents from "./components/MyEvents";
 import CreateEvent from "./components/CreateEvent";
-import EditEvent from "./components/EditEvent"; // Import the EditEvent component
+import EditEvent from "./components/EditEvent";
 import ProtectedRoute from "./components/ProtectedRoute";
+import EventDetails from "./components/EventDetails";
 
 function App() {
   const [user, setUser] = useState(null); // Centralized user state
@@ -81,6 +82,16 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <EditEvent />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Add route for Event Details */}
+          <Route
+            path="/event-details/:id"
+            element={
+              <ProtectedRoute user={user}>
+                <EventDetails />
               </ProtectedRoute>
             }
           />
