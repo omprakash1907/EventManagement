@@ -1,5 +1,5 @@
 const express = require('express');
-const { createEvent, getAllEvents, editEvent, deleteEvent, getMyEvents, getEventById } = require('../controllers/evevntController');
+const { createEvent, getAllEvents, editEvent, deleteEvent, getMyEvents, getEventById, checkRsvpStatus, rsvpEvent, getRsvpAttendees } = require('../controllers/evevntController');
 const upload = require('../middleware/upload'); // Import Multer middleware
 const authMiddleware = require('../middleware/authMiddleware'); // Import auth middleware
 
@@ -25,5 +25,14 @@ router.delete('/:id', authMiddleware, deleteEvent);
 
 // get event by ID
 router.get('/:id', authMiddleware, getEventById);
+
+// RSVP to an event
+router.post('/:id/rsvp', authMiddleware, rsvpEvent);
+
+// Check if the user has RSVP'd to an event
+router.get('/:id/rsvp-status', authMiddleware, checkRsvpStatus);
+
+// Get the list of RSVP'd attendees
+router.get('/:id/rsvp-attendees', authMiddleware, getRsvpAttendees);
 
 module.exports = router;

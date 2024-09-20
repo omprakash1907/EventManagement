@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const CreateEvent = () => {
   const [title, setTitle] = useState('');
@@ -97,7 +98,7 @@ const CreateEvent = () => {
             className="w-full"
           />
         </div>
-        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">Create Event</button>
+        <Link to={'/'} type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">Create Event</Link>
       </form>
     </div>
   );

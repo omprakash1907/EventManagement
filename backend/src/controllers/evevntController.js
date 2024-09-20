@@ -112,13 +112,13 @@ exports.getMyEvents = async (req, res) => {
   }
 };
 
-// Get event by ID
+// Get event by ID (with populated attendees)
 exports.getEventById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const event = await Event.findById(id).populate('creator', 'name email');
-
+    const event = await Event.findById(id).populate('attendees', 'name email').populate('creator', 'name email');
+    
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
@@ -128,5 +128,90 @@ exports.getEventById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// If you need to populate attendees in getAllEvents as well
+exports.getAllEvents = async (req, res) => {
+  try {
+    const events = await Event.find().populate('attendees', 'name email').populate('creator', 'name email');
+    res.status(200).json(events);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// RSVP to an event
+exports.rsvpEvent = async (req, res) => {
+  const { id } = req.params; // Event ID
+  const userId = req.user._id; // Logged-in user ID
+
+  try {
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Check if the event is already fully booked
+    if (event.attendees.length >= event.maxAttendees) {
+      return res.status(400).json({ message: 'Event is fully booked' });
+    }
+
+    // Check if the user has already RSVP'd
+    if (event.attendees.includes(userId)) {
+      return res.status(400).json({ message: 'You have already RSVP\'d to this event' });
+    }
+
+    // Add user to attendees array
+    event.attendees.push(userId);
+
+    await event.save();
+
+    res.status(200).json({ message: 'RSVP successful' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// Check if user RSVP'd to an event
+exports.checkRsvpStatus = async (req, res) => {
+  const { id } = req.params; // Event ID
+  const userId = req.user._id; // Logged-in user ID
+
+  try {
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Check if the user is in the attendees list
+    const hasRsvp = event.attendees.includes(userId);
+
+    res.status(200).json({ hasRsvp });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get the list of RSVP'd attendees
+exports.getRsvpAttendees = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const event = await Event.findById(id).populate('attendees', 'name email'); // Populate the user info
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.status(200).json(event.attendees);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
 
 
