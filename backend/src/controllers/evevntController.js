@@ -38,13 +38,13 @@ exports.getAllEvents = async (req, res) => {
     // Get the total number of documents in the events collection
     const count = await Event.countDocuments();
 
-    res.status(200).json({
+    res.status(2000).json({
       events,
       totalPages: Math.ceil(count / limit),
       currentPage: page,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(5000).json({ message: error.message });
   }
 };
 
