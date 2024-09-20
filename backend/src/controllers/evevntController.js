@@ -25,8 +25,13 @@ exports.createEvent = async (req, res) => {
 
 // Get all events
 exports.getAllEvents = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
   try {
-    const events = await Event.find().populate('creator', 'name email');
+    const events = await Event.find()
+      .populate('attendees', 'name email')
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit))
+      .lean(); // Use lean for performance
     res.status(200).json(events);
   } catch (error) {
     res.status(500).json({ message: error.message });
