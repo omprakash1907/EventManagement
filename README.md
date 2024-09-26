@@ -70,3 +70,5 @@ Frontend
 
 Backend
 - Npm run dev
+
+Crafted with ❤️ by **Omprakash Jat**. Feel free to contribute, report issues, or suggest new features to make this project even better!
