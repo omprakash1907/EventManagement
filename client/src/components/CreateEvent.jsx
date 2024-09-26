@@ -34,7 +34,7 @@ const CreateEvent = () => {
       }
 
       // Send POST request to create event
-      const response = await axios.post('http://localhost:5000/api/events/create', formData, {
+      const response = await axios.post('https://eventmanagement-ksbh.onrender.com/api/events/create', formData, {
         headers: {
           Authorization: `Bearer ${token}`, // Include token in headers
           'Content-Type': 'multipart/form-data' // Set Content-Type to multipart/form-data

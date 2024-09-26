@@ -11,7 +11,7 @@ const MyEvents = ({ user }) => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get('http://localhost:5000/api/events/my-events', {
+          const response = await axios.get('https://eventmanagement-ksbh.onrender.com/api/events/my-events', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -37,7 +37,7 @@ const MyEvents = ({ user }) => {
     if (confirmDelete) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:5000/api/events/${eventId}`, {
+        await axios.delete(`https://eventmanagement-ksbh.onrender.com/api/events/${eventId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEvents(events.filter(event => event._id !== eventId));

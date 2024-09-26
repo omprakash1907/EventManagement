@@ -23,7 +23,7 @@ const EventDetails = () => {
         }
 
         // Fetch event details
-        const response = await axios.get(`http://localhost:5000/api/events/${id}`, {
+        const response = await axios.get(`https://eventmanagement-ksbh.onrender.com/api/events/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
           },
@@ -35,7 +35,7 @@ const EventDetails = () => {
         setLoading(false);
 
         // Fetch RSVP status for the current user
-        const rsvpResponse = await axios.get(`http://localhost:5000/api/events/${id}/rsvp-status`, {
+        const rsvpResponse = await axios.get(`https://eventmanagement-ksbh.onrender.com/api/events/${id}/rsvp-status`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setHasRsvp(rsvpResponse.data.hasRsvp); // Check if the current user has RSVP'd
@@ -59,7 +59,7 @@ const EventDetails = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:5000/api/events/${id}/rsvp`,
+        `https://eventmanagement-ksbh.onrender.com/api/events/${id}/rsvp`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -81,7 +81,7 @@ const EventDetails = () => {
     <div className="container mx-auto p-8">
       <h1 className="text-4xl font-bold mb-4">{event.title}</h1>
       <img
-        src={`http://localhost:5000${event.image}`}
+        src={`https://eventmanagement-ksbh.onrender.com${event.image}`}
         alt={event.title}
         className="w-full h-64 object-cover mb-4"
       />

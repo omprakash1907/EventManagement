@@ -22,7 +22,7 @@ const Home = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/events');
+        const response = await axios.get('https://eventmanagement-ksbh.onrender.com/api/events');
         const allEvents = response.data;
         const uniqueLocations = [...new Set(allEvents.map(event => event.location))];
         setLocations(uniqueLocations); // Store unique locations

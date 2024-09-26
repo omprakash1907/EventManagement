@@ -16,7 +16,7 @@ const EventCard = ({ event, onDelete, onEdit, loggedInUser, showEditDelete = fal
           return;
         }
 
-        const response = await axios.get(`http://localhost:5000/api/events/${event._id}`, {
+        const response = await axios.get(`https://eventmanagement-ksbh.onrender.com/api/events/${event._id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -32,7 +32,7 @@ const EventCard = ({ event, onDelete, onEdit, loggedInUser, showEditDelete = fal
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105">
-      <img src={`http://localhost:5000${event.image}`} alt={event.title} className="w-full h-48 object-cover" />
+      <img src={`https://eventmanagement-ksbh.onrender.com${event.image}`} alt={event.title} className="w-full h-48 object-cover" />
       <div className="p-4">
         <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
         <div className="text-sm text-gray-600 flex items-center mb-2">

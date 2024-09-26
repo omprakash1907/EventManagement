@@ -25,7 +25,7 @@ const EditEvent = () => {
           throw new Error('No token found');
         }
 
-        const response = await axios.get(`http://localhost:5000/api/events/${id}`, {
+        const response = await axios.get(`https://eventmanagement-ksbh.onrender.com/api/events/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`, // Pass token in Authorization header
           },
@@ -73,7 +73,7 @@ const EditEvent = () => {
         throw new Error('No token found');
       }
 
-      await axios.put(`http://localhost:5000/api/events/${id}`, formData, {
+      await axios.put(`https://eventmanagement-ksbh.onrender.com/api/events/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
