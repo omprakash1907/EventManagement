@@ -58,12 +58,16 @@ Before you begin, make sure you have:
    cd EventManagement
 
 2. **Install frontend dependencies**:
-   - cd client
-   - npm install
+   
+    ```bash
+    cd client
+    npm install
      
-3. **Install backend dependencies**:
-   - cd backend
-   - npm run dev
+4. **Install backend dependencies**:
+   
+    ```bash
+    cd backend
+    npm run dev
 ## 🏃‍♂️ Running the Project
 Frontend
 - npm start
