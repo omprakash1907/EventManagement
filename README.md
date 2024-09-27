@@ -4,8 +4,8 @@ The **Event Management System** is a full-stack web application that enables use
 
 ## 🌐 Project Links
 
-- **Frontend**: [Expense Management Frontend](https://event-management-amber.vercel.app/)
-- **Backend**: [Expense Management Backend](https://eventmanagement-ksbh.onrender.com/)
+- **Frontend**: [Event Management Frontend](https://event-management-amber.vercel.app/)
+- **Backend**: [Event Management Backend](https://eventmanagement-ksbh.onrender.com/)
 
 ## 🎯 Features
 
